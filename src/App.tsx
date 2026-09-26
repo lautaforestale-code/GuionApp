@@ -95,6 +95,11 @@ function App() {
   const isRestoring = useRef(false);
   const lastSnapshotRef = useRef<string>(JSON.stringify({ title: initial.title, elements: initial.elements }));
 
+  // Kept current on every render so timers below don't need to be torn down
+  // and recreated on every keystroke just to see fresh values.
+  const latestRef = useRef({ title, elements });
+  latestRef.current = { title, elements };
+
   useEffect(() => {
     applyTheme(theme);
     persistTheme(theme);
@@ -172,15 +177,18 @@ function App() {
 
   useEffect(() => {
     const id = setTimeout(() => {
+      const { title, elements } = latestRef.current;
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ title, elements }));
     }, 400);
     return () => clearTimeout(id);
   }, [title, elements]);
 
   // Periodic checkpoint so a version history survives even if the writer
-  // never explicitly exports a file.
+  // never explicitly exports a file. Runs on a single long-lived interval
+  // (not recreated per keystroke) that always reads the latest doc via ref.
   useEffect(() => {
     const id = setInterval(() => {
+      const { title, elements } = latestRef.current;
       const serialized = JSON.stringify({ title, elements });
       if (serialized !== lastSnapshotRef.current) {
         lastSnapshotRef.current = serialized;
@@ -188,7 +196,7 @@ function App() {
       }
     }, SNAPSHOT_INTERVAL_MS);
     return () => clearInterval(id);
-  }, [title, elements]);
+  }, []);
 
   function snapshotNow() {
     lastSnapshotRef.current = JSON.stringify({ title, elements });

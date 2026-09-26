@@ -147,9 +147,13 @@ export const ScreenplayEditor = forwardRef<ScreenplayEditorHandle, Props>(
       },
     }));
 
-    useEffect(() => {
-      onChange?.(elements);
-    }, [elements, onChange]);
+    // Commits a new elements array and forwards it to the parent in the same
+    // tick (rather than via a separate `elements`-watching effect), so both
+    // components' state updates land in one React batch instead of two.
+    function commitElements(next: ScriptElement[]) {
+      setElements(next);
+      onChange?.(next);
+    }
 
     useEffect(() => {
       if (!pendingFocus.current) return;
@@ -202,12 +206,12 @@ export const ScreenplayEditor = forwardRef<ScreenplayEditorHandle, Props>(
     }, [elements]);
 
     function updateText(id: string, text: string) {
-      setElements((prev) => prev.map((el) => (el.id === id ? { ...el, text } : el)));
+      commitElements(elements.map((el) => (el.id === id ? { ...el, text } : el)));
     }
 
     function setType(id: string, type: ElementType) {
-      setElements((prev) =>
-        prev.map((el) => (el.id === id ? { ...el, type, text: transformTextForType(type, el.text) } : el))
+      commitElements(
+        elements.map((el) => (el.id === id ? { ...el, type, text: transformTextForType(type, el.text) } : el))
       );
     }
 
@@ -289,12 +293,10 @@ export const ScreenplayEditor = forwardRef<ScreenplayEditorHandle, Props>(
           type: newType,
           text: transformTextForType(newType, after),
         };
-        setElements((prev) => {
-          const copy = prev.slice();
-          copy[index] = { ...el, text: before };
-          copy.splice(index + 1, 0, newEl);
-          return copy;
-        });
+        const next = elements.slice();
+        next[index] = { ...el, text: before };
+        next.splice(index + 1, 0, newEl);
+        commitElements(next);
         pendingFocus.current = { id: newEl.id, offset: 0 };
         return;
       }
@@ -310,12 +312,10 @@ export const ScreenplayEditor = forwardRef<ScreenplayEditorHandle, Props>(
           e.preventDefault();
           const prevEl = elements[index - 1];
           const mergedText = prevEl.text + el.text;
-          setElements((prev) => {
-            const copy = prev.slice();
-            copy[index - 1] = { ...prevEl, text: mergedText };
-            copy.splice(index, 1);
-            return copy;
-          });
+          const next = elements.slice();
+          next[index - 1] = { ...prevEl, text: mergedText };
+          next.splice(index, 1);
+          commitElements(next);
           pendingFocus.current = { id: prevEl.id, offset: prevEl.text.length };
           return;
         }
