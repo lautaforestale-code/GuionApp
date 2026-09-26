@@ -11,6 +11,16 @@
   color: var(--page-text);
 }
 
+.line-row {
+  position: relative;
+  display: grid;
+}
+
+.line-row > .line {
+  grid-column: 1;
+  grid-row: 1;
+}
+
 .line {
   outline: none;
   white-space: pre-wrap;
@@ -18,6 +28,43 @@
   min-height: 1em;
   margin: 0;
   position: relative;
+}
+
+.line--overlay {
+  pointer-events: none;
+  color: transparent;
+  user-select: none;
+}
+
+.issue-mark {
+  pointer-events: auto;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: #e5484d;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.line-row__format-badge {
+  position: absolute;
+  left: -26px;
+  top: 0.1em;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #e5484d;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
 .line:empty::before {
@@ -65,10 +112,82 @@
   margin-top: 1em;
 }
 
+.issue-popover {
+  position: absolute;
+  z-index: 1000;
+  min-width: 170px;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--toolbar-bg);
+  color: var(--toolbar-text);
+  border: 1px solid var(--toolbar-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+}
+
+.issue-popover__title {
+  font-size: 12.5px;
+  opacity: 0.85;
+  padding: 2px 4px;
+}
+
+.issue-popover__empty {
+  font-size: 12px;
+  opacity: 0.6;
+  padding: 2px 4px;
+}
+
+.issue-popover button {
+  background: var(--button-bg);
+  color: var(--toolbar-text);
+  border: 1px solid var(--button-border);
+  border-radius: 5px;
+  padding: 6px 8px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.issue-popover button:hover {
+  background: var(--button-bg-hover);
+}
+
+.issue-popover__secondary {
+  opacity: 0.75;
+  margin-top: 2px;
+  border-top: 1px solid var(--toolbar-border);
+  padding-top: 6px;
+}
+
+.issue-popover__format-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--toolbar-border);
+}
+
+.issue-popover__format-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
 @media print {
   @page {
     size: letter;
     margin: 1in 1in 1in 1.5in;
+  }
+  .line--overlay,
+  .line-row__format-badge,
+  .issue-popover {
+    display: none !important;
   }
   .screenplay-page {
     background: #fff;
