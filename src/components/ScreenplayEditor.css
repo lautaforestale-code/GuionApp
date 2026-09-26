@@ -84,6 +84,12 @@
   margin-top: 1em;
 }
 
+/* Extra breathing room specifically right after a scene heading, on top of
+   the standard 1em every element already gets. */
+.line-row:has(> .line--scene_heading) + .line-row > .line--action {
+  margin-top: 1.8em;
+}
+
 .line--character {
   text-transform: uppercase;
   margin-top: 1em;

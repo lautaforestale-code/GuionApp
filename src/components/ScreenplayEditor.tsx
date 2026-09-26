@@ -62,6 +62,48 @@ function setCaretAtOffset(el: HTMLElement, offset: number) {
   sel.addRange(range);
 }
 
+const WORD_BOUNDARY_RE = /[\s.,;:!?)\]"'”»]/;
+
+function stripAccents(word: string): string {
+  return word.normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
+/** Reapplies `original`'s case pattern (ALLCAPS / Capitalized / lowercase)
+ *  onto `replacement`, which is assumed to be the same word, just accented. */
+function recase(original: string, replacement: string): string {
+  if (original === original.toUpperCase()) return replacement.toUpperCase();
+  if (original[0] === original[0]?.toUpperCase()) {
+    return replacement.charAt(0).toUpperCase() + replacement.slice(1).toLowerCase();
+  }
+  return replacement.toLowerCase();
+}
+
+/** Silently restores missing/wrong accents once a word is finished (a
+ *  boundary character was just typed, or the field is being left) — but only
+ *  when the unaccented form isn't a word on its own, so "esta"/"está",
+ *  "el"/"él", "si"/"sí" etc. (both real, different words) are never touched. */
+function tryAutoAccentFix(div: HTMLDivElement, speller: Speller | null, atEnd: boolean) {
+  if (!speller) return;
+  const text = div.textContent ?? "";
+  const caret = atEnd ? text.length : getCaretOffset(div);
+  if (caret === 0) return;
+  if (!atEnd && !WORD_BOUNDARY_RE.test(text[caret - 1])) return;
+
+  const wordEnd = atEnd ? caret : caret - 1;
+  const span = tokenizeWords(text).find((s) => s.end === wordEnd);
+  if (!span || span.word.length < 3 || speller.correct(span.word)) return;
+
+  const match = speller
+    .suggest(span.word)
+    .find((s) => s !== span.word && stripAccents(s).toLowerCase() === stripAccents(span.word).toLowerCase());
+  if (!match) return;
+
+  const fixed = recase(span.word, match);
+  if (fixed === span.word) return;
+  div.textContent = text.slice(0, span.start) + fixed + text.slice(span.end);
+  setCaretAtOffset(div, caret);
+}
+
 const CTRL_SHORTCUTS: Record<string, ElementType> = {
   "1": "scene_heading",
   "2": "action",
@@ -304,7 +346,12 @@ export const ScreenplayEditor = forwardRef<ScreenplayEditorHandle, Props>(
     function handleBlurCommit(el: ScriptElement, div: HTMLDivElement) {
       const transformed = transformTextForType(el.type, div.textContent ?? "");
       if (transformed !== div.textContent) {
-        updateText(el.id, transformed);
+        div.textContent = transformed;
+      }
+      tryAutoAccentFix(div, spellerRef.current, true);
+      const finalText = div.textContent ?? "";
+      if (finalText !== el.text) {
+        updateText(el.id, finalText);
       }
     }
 
@@ -326,6 +373,7 @@ export const ScreenplayEditor = forwardRef<ScreenplayEditorHandle, Props>(
             onKeyDown={(e) => handleKeyDown(e, el, index)}
             onFocus={() => onActiveElementChange?.(el.id)}
             onBlurCommit={handleBlurCommit}
+            spellerRef={spellerRef}
             onSpellingClick={openSpellingPopover}
             onFormatClick={openFormatPopover}
           />
@@ -425,6 +473,7 @@ function Line({
   onKeyDown,
   onFocus,
   onBlurCommit,
+  spellerRef,
   onSpellingClick,
   onFormatClick,
 }: {
@@ -438,6 +487,7 @@ function Line({
   onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   onFocus: () => void;
   onBlurCommit: (el: ScriptElement, div: HTMLDivElement) => void;
+  spellerRef: React.RefObject<Speller | null>;
   onSpellingClick: (elementId: string, span: WordSpan, rect: DOMRect) => void;
   onFormatClick: (elementId: string, issues: FormatIssue[], rect: DOMRect) => void;
 }) {
@@ -472,7 +522,8 @@ function Line({
             div.textContent = transformed;
             setCaretAtOffset(div, offset);
           }
-          onInput(transformed);
+          tryAutoAccentFix(div, spellerRef.current, false);
+          onInput(div.textContent ?? "");
         }}
         onKeyDown={onKeyDown}
         onFocus={onFocus}
