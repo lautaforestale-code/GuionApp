@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GuionApp</title>
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("guionapp:theme");
+          if (t !== "light" && t !== "dark") {
+            t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          }
+          document.documentElement.setAttribute("data-theme", t);
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/GuionApp/assets/index-2nAgT9b0.js"></script>
+    <link rel="stylesheet" crossorigin href="/GuionApp/assets/index-CuUfyGvQ.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
