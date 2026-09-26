@@ -1,0 +1,117 @@
+.history-panel__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 100;
+}
+
+.history-panel {
+  width: min(360px, 100%);
+  height: 100%;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  border-left: 1px solid var(--sidebar-border);
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, sans-serif;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.25);
+}
+
+.history-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.history-panel__header h3 {
+  margin: 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sidebar-heading);
+}
+
+.history-panel__close {
+  background: none;
+  border: none;
+  color: var(--sidebar-text);
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+}
+
+.history-panel__empty {
+  padding: 16px;
+  color: var(--sidebar-empty);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.history-panel__list {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.history-panel__item {
+  padding: 10px 8px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.history-panel__item:hover {
+  background: var(--sidebar-hover);
+}
+
+.history-panel__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12.5px;
+}
+
+.history-panel__date {
+  color: var(--sidebar-heading);
+  font-size: 11.5px;
+}
+
+.history-panel__title {
+  font-weight: 600;
+}
+
+.history-panel__pages {
+  color: var(--sidebar-num);
+  font-size: 11.5px;
+}
+
+.history-panel__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.history-panel__actions button {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--button-border);
+  background: var(--button-bg);
+  color: var(--toolbar-text);
+  cursor: pointer;
+}
+
+.history-panel__actions button:hover {
+  background: var(--button-bg-hover);
+}
+
+.history-panel__delete {
+  opacity: 0.75;
+}

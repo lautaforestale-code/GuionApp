@@ -1,0 +1,51 @@
+.scene-nav {
+  width: 220px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  padding: 12px;
+  font-family: system-ui, sans-serif;
+  overflow-y: auto;
+}
+
+.scene-nav h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sidebar-heading);
+}
+
+.scene-nav__empty {
+  color: var(--sidebar-empty);
+  font-size: 12px;
+}
+
+.scene-nav ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.scene-nav li {
+  display: flex;
+  gap: 8px;
+  padding: 6px 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: var(--sidebar-text);
+}
+
+.scene-nav li:hover {
+  background: var(--sidebar-hover);
+}
+
+.scene-nav__num {
+  color: var(--sidebar-num);
+  min-width: 1.2em;
+}
+
+.scene-nav__text {
+  overflow-wrap: anywhere;
+}

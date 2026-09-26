@@ -1,0 +1,64 @@
+:root {
+  color-scheme: light;
+  --app-bg: #6b6d75;
+  --toolbar-bg: #23252b;
+  --toolbar-text: #eee;
+  --toolbar-border: #35373f;
+  --toolbar-input-bg: #33353d;
+  --toolbar-input-border: #45474f;
+  --button-bg: #3a3c44;
+  --button-bg-hover: #46484f;
+  --button-border: #4a4c54;
+  --accent: #5b6cff;
+  --sidebar-bg: #f4f4f4;
+  --sidebar-border: #ddd;
+  --sidebar-heading: #666;
+  --sidebar-text: #2a2a2e;
+  --sidebar-hover: #e4e6ff;
+  --sidebar-empty: #999;
+  --sidebar-num: #888;
+  --page-bg: #fff;
+  --page-text: #111;
+  --page-placeholder: #b8b8b8;
+  --page-shadow: rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --app-bg: #1b1c20;
+  --toolbar-bg: #17181c;
+  --toolbar-text: #eee;
+  --toolbar-border: #2a2b30;
+  --toolbar-input-bg: #26272c;
+  --toolbar-input-border: #38393f;
+  --button-bg: #2c2d33;
+  --button-bg-hover: #383940;
+  --button-border: #3c3d44;
+  --accent: #7c8bff;
+  --sidebar-bg: #202126;
+  --sidebar-border: #2c2d33;
+  --sidebar-heading: #9a9ba3;
+  --sidebar-text: #d6d7dc;
+  --sidebar-hover: #2f3140;
+  --sidebar-empty: #6f7078;
+  --sidebar-num: #7c7d85;
+  --page-bg: #232427;
+  --page-text: #e4e4e6;
+  --page-placeholder: #5a5b60;
+  --page-shadow: rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+  background: var(--app-bg);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}

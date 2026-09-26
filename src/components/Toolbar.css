@@ -1,0 +1,84 @@
+.toolbar {
+  background: var(--toolbar-bg);
+  color: var(--toolbar-text);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+}
+
+.toolbar__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.toolbar__title {
+  flex: 1;
+  min-width: 160px;
+  background: var(--toolbar-input-bg);
+  border: 1px solid var(--toolbar-input-border);
+  border-radius: 4px;
+  color: var(--toolbar-text);
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.toolbar__file-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.toolbar button {
+  background: var(--button-bg);
+  color: var(--toolbar-text);
+  border: 1px solid var(--button-border);
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.toolbar button:hover {
+  background: var(--button-bg-hover);
+}
+
+.toolbar button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.toolbar button:disabled:hover {
+  background: var(--button-bg);
+}
+
+.toolbar button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.toolbar__theme-toggle {
+  font-size: 15px;
+  padding: 5px 9px;
+  line-height: 1;
+}
+
+.toolbar__pages {
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.toolbar__elements {
+  border-top: 1px solid var(--toolbar-border);
+  padding-top: 6px;
+}
+
+.toolbar__hint {
+  opacity: 0.6;
+  margin-left: auto;
+  font-size: 11px;
+}

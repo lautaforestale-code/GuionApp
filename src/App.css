@@ -1,0 +1,35 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app__body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.app__editor-scroll {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--app-bg);
+  padding: 32px 0 200px;
+}
+
+@media print {
+  .toolbar,
+  .scene-nav {
+    display: none !important;
+  }
+  .app__editor-scroll {
+    background: none;
+    padding: 0;
+    overflow: visible;
+  }
+  .app,
+  .app__body {
+    display: block;
+    height: auto;
+  }
+}

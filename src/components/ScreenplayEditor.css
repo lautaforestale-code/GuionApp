@@ -1,0 +1,82 @@
+.screenplay-page {
+  background: var(--page-bg);
+  width: 8.5in;
+  min-height: 11in;
+  margin: 0 auto;
+  padding: 1in 1in 1in 1.5in;
+  box-shadow: 0 0 12px var(--page-shadow);
+  font-family: "Courier Prime", "Courier New", Courier, monospace;
+  font-size: 12pt;
+  line-height: 1;
+  color: var(--page-text);
+}
+
+.line {
+  outline: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 1em;
+  margin: 0;
+  position: relative;
+}
+
+.line:empty::before {
+  content: attr(data-placeholder);
+  color: var(--page-placeholder);
+  pointer-events: none;
+}
+
+.line--scene_heading,
+.line--shot {
+  text-transform: uppercase;
+  margin-top: 1em;
+  font-weight: 700;
+}
+
+.line--action {
+  margin-top: 1em;
+}
+
+.line--character {
+  text-transform: uppercase;
+  margin-top: 1em;
+  margin-left: 2.2in;
+  max-width: 2.6in;
+}
+
+.line--parenthetical {
+  margin-left: 1.6in;
+  max-width: 2in;
+}
+
+.line--dialogue {
+  margin-left: 1in;
+  max-width: 3.5in;
+}
+
+.line--transition {
+  text-transform: uppercase;
+  margin-top: 1em;
+  text-align: right;
+}
+
+.line--centered {
+  text-align: center;
+  margin-top: 1em;
+}
+
+@media print {
+  @page {
+    size: letter;
+    margin: 1in 1in 1in 1.5in;
+  }
+  .screenplay-page {
+    background: #fff;
+    color: #111;
+    box-shadow: none;
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+  }
+}
